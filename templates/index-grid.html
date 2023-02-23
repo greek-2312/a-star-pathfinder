@@ -1,0 +1,428 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <link href='https://fonts.googleapis.com/css?family=PT+Sans|Autour+One|Source+Code+Pro' rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  </head>
+  <body>
+    <section id="sidebar">
+      <div class="header">
+        <div>
+          <h1 class="title">A* PATHFINDER</h1>
+        </div>
+      </div>
+
+      <hr />
+
+      <div class="env-wrapper"><br>
+        <div class="generated-env-information">
+          <h3 class="env-information" style="color:black;">Environment generated for: </h3>
+          <ul class="enumerate">
+            <li>initial state coordinates<b class="env-information" style="color:chartreuse">{{ initial_state }}</b></li>
+            <li>goal state coordinates <b class="env-information" style="color:brown">{{ goal_state }}</b></li>
+            <li>obstacle probability <b class="env-information" style="color:aquamarine">{{ obstacle_probability }}</b></li>
+            <li>plotting speed <b class="env-information" style="color:aquamarine">{{ speed }}</b></li>
+          </ul><br>
+        </div>
+        <input class="submit-button" type="submit" value="Start" onClick="start();">
+      </div>
+
+      <hr />
+
+      <div class="env-wrapper"><br>
+        <h3 class="generated-env-information" style="text-align: center; color:black;">Generate another environment with custom coordinates</h3>
+        <button class="submit-button" type="submit" value="Generate" onClick="show();">Generate</button>
+      
+        <div class="env-information" id="new-env-generation" style="display:None;">  
+          <form style="color: #ffffff;" method="POST">
+            <div>
+              <p class="paragraph">Input initial state: </p>
+              <input type="text" class="rounded-input" name="start-x" size="10" value="0"></input>
+              <input type="text" class="rounded-input" name="start-y" size="10" value="0"></input><br>
+            </div>
+            <div>          
+              <p class="paragraph">Input goal state: </p>
+              <input type="text" class="rounded-input" name="end-x" size="10" value="19"></input>
+              <input type="text" class="rounded-input" name="end-y" size="10" value="19"></input><br>
+            </div>
+            <!-- <div>
+              <p class="paragraph">Input obstacle probability: </p>
+              <input type="text" class="rounded-input" name="obstacle-probability" size="23" value="10"></input><br>
+            </div> -->
+            <div>
+              <p class="paragraph">Input obstacle probability: </p>
+              <input type="range" class="slider" id="obstacle-probability" name="obstacle-probability" min="0" max="0.3" step="0.1" value="0.3" onchange="updateTextInput(this.value)">
+              <input type="text" class="rounded-input" id="obstacle-input" name="obstacle-input" size="23" value="0.3"></input><br>
+            </div>
+            <div>
+              <p class="paragraph">Input plotting speed: </p>
+              <input type="text" class="rounded-input" name="speed" size="23" value="100"></input><br>
+            </div>
+            <br>
+            <div>
+              <input class="regenerate-button" type="submit" value="Generate environment">
+            </div>
+          </form>
+        </div>
+      </div>
+    <hr />
+
+    </section>
+    <section id="view">
+      <div id="board">
+        
+        <div id="overlay">
+        {% if not terrain %}
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+        {% else %}
+          {% for block_element in terrain %}
+            <span class="plot"></span>
+          {% endfor %}
+        {% endif %}
+        </div>
+        <div id="plants"></div>
+        <div id="garden"></div>
+        
+        <div id="soil">
+        {% if not terrain %}
+          <span class="plotconcrete"></span>
+          <span class="plotconcrete"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plotconcrete"></span>
+          <span class="plotconcrete"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plotconcrete"></span>
+          <span class="plotconcrete"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+          <span class="plot"></span>
+        {% else %}
+          {% for block_element in terrain %}
+            {% if block_element == 0 %}
+              <span class="plot" tag="grid-element"></span>
+            {% elif block_element == 1 %}
+              <span class="plotconcrete" tag="grid-element"></span>
+            {% else %}
+              <span class="plotobsidian" tag="grid-element"></span>
+            {%endif%}
+          {% endfor %}
+        {% endif %}
+        
+      </div>
+    </div>
+
+    <script>      
+      function updateTextInput(val) {
+          document.getElementById('obstacle-input').value=val; 
+        }
+      function show(){
+          document.getElementById('new-env-generation').style.display = "inline";
+          }
+
+      function splitArray(array, part) {
+            var tmp = [];
+            for(var i = 0; i < array.length; i += part) {
+                tmp.push(array.slice(i, i + part));
+            }
+            return tmp;
+        }
+
+      var start_node = JSON.parse('{{ initial_state }}')
+      var end_node = JSON.parse('{{ goal_state }}')
+      var level_mapper = JSON.parse('{{ level_mapper }}');  
+
+      var elements = document.querySelector("#soil").getElementsByTagName('span')
+      var arr = Array.prototype.slice.call( elements )
+      var arr = splitArray(arr, 20)
+
+      let styleObjectStart = {color: '#fff', 'background-color' : '#FFFF00', 'background-image': "url('../images/dirt.svg')"};
+      let styleObjectEnd = {color: '#fff', 'background-color' : '#0000FF', 'background-image': "url('../images/dirt.svg')"}
+      // "url('../images/dirt.svg')"
+      // "{{url_for('static', filename = 'images/dirt.svg')}}"
+
+      // for (let i=0; i < arr[0].length; i++){
+      //   for (let j=0; j< arr[0].length; j++){
+      //     Object.assign(arr[i][j].style, openStyleObject);
+      //   }
+      // }
+
+      // "url('../images/dirt.svg')"};
+      // {{url_for('static', filename = 'images/dirt.svg')}}
+      Object.assign(arr[parseInt(start_node[1])][parseInt(start_node[0])].style, styleObjectStart);
+      Object.assign(arr[parseInt(end_node[1])][parseInt(end_node[0])].style, styleObjectEnd);
+
+      const timer = ms => new Promise(res => setTimeout(res, ms))
+
+      async function start(){
+
+        var path = JSON.parse('{{ optimal_solution }}')
+        var elements = document.querySelector("#soil").getElementsByTagName('span')
+
+        var arr = Array.prototype.slice.call( elements )
+        var arr = splitArray(arr, 20)
+
+        let styleObject = {color: '#fff', 'background-color' : '#00FF00', 'background-image': "url('../images/dirt.svg')"};
+        let openStyleObject = {color: '#fff', 'background-color' : '#AA4A44', 'background-image': "url('../images/dirt.svg')"};
+        let initialStyleObject = {color: '#fff', 'background-color' : '#523D1F', 'background-image': "{{url_for('static', filename = 'images/dirt.svg')}}"};
+        var reference_arr = []
+        
+        if (level_mapper.length < path.length) {
+          reference_arr = path
+        } else {
+          reference_arr = level_mapper
+        }
+
+          for (let i = 0; i < reference_arr.length; i++) {
+            try {
+              for (let j = 0; j < level_mapper[i].length; j++) {
+                let isPresent = path.includes(level_mapper[i][j])
+                if (!isPresent) {
+                  try {
+                    Object.assign(arr[level_mapper[i][j][1]][level_mapper[i][j][0]].style, initialStyleObject);
+                  } catch (error) {
+                    console.error("No value for this level.");
+                  }
+                }
+
+                // Object.assign(arr[level_mapper[i][j][1]][level_mapper[i][j][0]].style, openStyleObject);
+              }
+            } catch (error){
+              console.log("No more expandable units.")
+            }
+            try {
+              Object.assign(arr[path[i][1]][path[i][0]].style, initialStyleObject);
+            } catch (error) {
+              console.error("Solution ready.");
+            }
+
+            // await timer(100);
+          }
+
+        // if (level_mapper.length < path.length) {
+        //   reference_arr = path
+        // } else {
+        //   reference_arr = level_mapper
+        // }
+
+          for (let i = 0; i < reference_arr.length; i++) {
+            try {
+              for (let j = 0; j < level_mapper[i].length; j++) {
+                let isPresent = path.includes(level_mapper[i][j])
+                if (!isPresent) {
+                  try {
+                    Object.assign(arr[level_mapper[i][j][1]][level_mapper[i][j][0]].style, openStyleObject);
+                  } catch (error) {
+                    console.error("No value for this level.");
+                  }
+                }
+
+                // Object.assign(arr[level_mapper[i][j][1]][level_mapper[i][j][0]].style, openStyleObject);
+              }
+            } catch (error){
+              console.log("No more expandable units.")
+            }
+            try {
+              Object.assign(arr[path[i][1]][path[i][0]].style, styleObject);
+            } catch (error) {
+              console.error("Solution ready.");
+            }
+
+            // await timer(200);
+            await timer("{{ speed }}");
+          }
+        }
+
+      </script>
+    </section>
+  </body>
+</html>
